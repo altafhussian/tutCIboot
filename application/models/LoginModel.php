@@ -12,9 +12,10 @@ class LoginModel extends CI_Model {
       $this->db->where($condition);
       $this->db->limit(1);
       $query = $this->db->get();
+      $row = $query->result_array();
 
       if ($query->num_rows() == 1) {
-        return true;
+        return $row;
       } else {
         return false;
       }

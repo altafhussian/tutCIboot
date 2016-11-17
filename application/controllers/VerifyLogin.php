@@ -19,7 +19,13 @@ class VerifyLogin extends CI_Controller {
    else
    {
      //Go to private area
-     redirect('home', 'refresh');
+     $this->load->model('RegisterModel');
+     $user_data = $this->session->all_userdata();
+     $id = $user_data['logged_in']['id'];
+     
+     $this->data['user'] = $this->RegisterModel->get_users($id);
+
+     $this->load->view('home_view',$this->data);
    }
  }
 
@@ -31,15 +37,14 @@ class VerifyLogin extends CI_Controller {
     $this->load->model('LoginModel');
     //query the database
     $result = $this->LoginModel->login($username, $password);
-
-    if($result)
+    if(count($result) > 0)
     {
       $sess_array = array();
       foreach($result as $row)
       {
         $sess_array = array(
-          'id' => $row->id,
-          'username' => $row->username
+          'id' => $row['id'],
+          'username' => $row['username']
         );
         $this->session->set_userdata('logged_in', $sess_array);
       }
