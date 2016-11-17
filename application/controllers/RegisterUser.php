@@ -15,6 +15,9 @@ class RegisterUser extends CI_Controller {
      $this->form_validation->set_rules('passwd', 'Password', 'trim|required|xss_clean');
      $this->form_validation->set_rules('cpasswd', 'Confirm Password', 'trim|required|xss_clean|matches[passwd]');
 
+     $username = $this->input->post('username');
+     $this->form_validation->set_rules('userfile', 'Upload Image', "callback_upload[{$username}]");
+
      if($this->form_validation->run() == FALSE)
      {
        //Field validation failed.  User redirected to Register page
@@ -36,6 +39,30 @@ class RegisterUser extends CI_Controller {
        $this->RegisterModel->insert_users($data);
        redirect('Login', 'refresh');
      }
+   }
+
+   function upload($default,$username){
+;
+       $config['upload_path']          = dirname($_SERVER["SCRIPT_FILENAME"])."/uploads/";
+       $config['upload_url']           = base_url()."uploads/";
+       $config['allowed_types']        = 'png';
+       $config['max_size']             = 1000;
+       $config['max_width']            = 1900;
+       $config['max_height']           = 1900;
+       $config['file_name']            = $username;
+
+       $this->load->library('upload', $config);
+
+      if ( ! $this->upload->do_upload('userfile'))
+      {
+              $error = array('error' => $this->upload->display_errors());
+              $this->form_validation->set_message('upload', $this->upload->display_errors());
+
+              return false;
+      }else {
+              return TRUE;
+      }
+
    }
 }
 

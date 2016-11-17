@@ -30,7 +30,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									</div>
 									<div class="panel-body" >
 										<?php echo validation_errors(); ?>
-											<form id="signupform" class="form-horizontal" role="form"  method="POST" action="<?php echo base_url("index.php/RegisterUser"); ?>" >
+											<form id="signupform" class="form-horizontal" role="form"  enctype="multipart/form-data" method="POST" action="<?php echo base_url("index.php/RegisterUser"); ?>" >
 													<div id="signupalert" style="display:none" class="alert alert-danger">
 															<p>Error:</p>
 															<span></span>
@@ -71,6 +71,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 																	<input type="password" class="form-control" name="cpasswd" placeholder="Confirm Password" value="<?php echo set_value('cpasswd'); ?>">
 															</div>
 													</div>
+													<input type="file" name="userfile" size="20" />
 													<div class="form-group">
 															<div class="col-md-offset-3 col-md-9">
 																	<button id="btn-signup" type="submit" class="btn btn-success"><i class="icon-hand-right"></i> &nbsp Sign Up</button>
